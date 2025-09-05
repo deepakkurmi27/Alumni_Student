@@ -81,6 +81,7 @@ function ChatScreen() {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Type a message"
+          placeholderTextColor={"#888"}
           value={newMessage}
           onChangeText={setNewMessage}
           style={styles.input}

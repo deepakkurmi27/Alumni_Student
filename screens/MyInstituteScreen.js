@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, ScrollView } from "react-native";
 import { Card } from "react-native-paper";
-import * as ImagePicker from "expo-image-picker";
+import { launchImageLibrary } from "react-native-image-picker";
 
 export default function MyInstituteScreen() {
   const [institute, setInstitute] = useState({
@@ -16,32 +16,23 @@ export default function MyInstituteScreen() {
   const [step, setStep] = useState("form"); // form | otp | saved | edit
 
   // Pick institute logo
-  const pickLogo = async () => {
-    try {
-      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (!permissionResult.granted) {
-        alert("Permission to access gallery is required!");
-        return;
-      }
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.8,
-      });
-
-      if (!result.canceled) {
-        setInstitute((prev) => ({ ...prev, logo: result.assets[0].uri }));
-      }
-    } catch (error) {
-      console.error("Image picking error:", error);
+  const pickLogo = () => {
+  launchImageLibrary({ mediaType: 'photo' }, (response) => {
+    if (response.didCancel) {
+      console.log("User cancelled image picker");
+    } else if (response.errorMessage) {
+      console.log("ImagePicker Error: ", response.errorMessage);
+    } else {
+      const uri = response.assets[0].uri;
+      setInstitute({ ...institute, logo: uri });
     }
-  };
+  });
+};
+
 
   // Simulate sending OTP
   const sendOtp = () => {
-    if (!institute.email.includes("edu")) {
+    if (!institute.email.includes(".ac.",".org")) {
       Alert.alert("Invalid Email", "Please use a valid institute email.");
       return;
     }
@@ -72,19 +63,21 @@ export default function MyInstituteScreen() {
               {institute.logo ? (
                 <Image source={{ uri: institute.logo }} style={styles.logo} />
               ) : (
-                <Text style={{ color: "#666" }}>Pick Institute Logo</Text>
+                <Text style={{ color: "#666" }}>Logo</Text>
               )}
             </TouchableOpacity>
 
             <TextInput
               style={styles.input}
               placeholder="Institute Name"
+              placeholderTextColor="#888"
               value={institute.name}
               onChangeText={(text) => setInstitute({ ...institute, name: text })}
             />
             <TextInput
               style={styles.input}
               placeholder="Institute Email (only official)"
+              placeholderTextColor="#888"
               keyboardType="email-address"
               value={institute.email}
               onChangeText={(text) => setInstitute({ ...institute, email: text })}
@@ -92,6 +85,7 @@ export default function MyInstituteScreen() {
             <TextInput
               style={styles.input}
               placeholder="Institute Location"
+              placeholderTextColor="#888"
               value={institute.location}
               onChangeText={(text) => setInstitute({ ...institute, location: text })}
             />
@@ -148,15 +142,17 @@ export default function MyInstituteScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "#f3f5faff",
     padding: 15,
+    color: "#333",
   },
   card: {
     borderRadius: 15,
     padding: 10,
     marginTop: 30,
-    backgroundColor: "#fff",
+    backgroundColor: "#f7f1f1ff",
     elevation: 4,
+    
   },
   title: {
     fontSize: 20,

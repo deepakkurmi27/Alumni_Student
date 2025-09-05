@@ -69,10 +69,10 @@ function JobsScreen() {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f0f4f7', padding: 15 }}>
       {/* Job Input Form */}
-      <TextInput placeholder="Job Title" value={newTitle} onChangeText={setNewTitle} style={styles.input} />
-      <TextInput placeholder="Company" value={newCompany} onChangeText={setNewCompany} style={styles.input} />
-      <TextInput placeholder="Location" value={newLocation} onChangeText={setNewLocation} style={styles.input} />
-      <TextInput placeholder="Deadline" value={newDeadline} onChangeText={setNewDeadline} style={styles.input} />
+      <TextInput placeholder="Job Title" placeholderTextColor={"#888"} value={newTitle} onChangeText={setNewTitle} style={styles.input} />
+      <TextInput placeholder="Company"placeholderTextColor={"#888"} value={newCompany} onChangeText={setNewCompany} style={styles.input} />
+      <TextInput placeholder="Location"placeholderTextColor={"#888"} value={newLocation} onChangeText={setNewLocation} style={styles.input} />
+      <TextInput placeholder="Deadline"placeholderTextColor={"#888"} value={newDeadline} onChangeText={setNewDeadline} style={styles.input} />
       <TouchableOpacity style={styles.button} onPress={addJob}>
         <Text style={styles.buttonText}>Post Job</Text>
       </TouchableOpacity>
@@ -110,8 +110,8 @@ function GuidanceScreen() {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f0f4f7', padding: 15 }}>
-      <TextInput placeholder="Title" value={newTitle} onChangeText={setNewTitle} style={styles.input} />
-      <TextInput placeholder="Content" value={newContent} onChangeText={setNewContent} multiline style={[styles.input, { height: 80 }]} />
+      <TextInput placeholder="Title"placeholderTextColor={"#888"} value={newTitle} onChangeText={setNewTitle} style={styles.input} />
+      <TextInput placeholder="Content"placeholderTextColor={"#888"} value={newContent} onChangeText={setNewContent} multiline style={[styles.input, { height: 80 }]} />
       <TouchableOpacity style={styles.button} onPress={addGuidance}>
         <Text style={styles.buttonText}>Post Guidance</Text>
       </TouchableOpacity>

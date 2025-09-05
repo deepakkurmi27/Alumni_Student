@@ -9,12 +9,17 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 export default function SignupScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
+
+  const [selectedInstitute, setSelectedInstitute] = useState("");
+const institutes = ["Select Institute", "IIT Delhi", "NIT Jaipur", "BITS Pilani"];
+
 
   return (
     <KeyboardAvoidingView
@@ -57,28 +62,53 @@ export default function SignupScreen({ navigation }) {
         />
 
         {/* Role Selector */}
-        <Text style={styles.label}>Select Role</Text>
-        <View style={styles.roleContainer}>
-          {["student", "alumni", "admin"].map((item) => (
-            <TouchableOpacity
-              key={item}
-              style={[
-                styles.roleButton,
-                role === item && styles.activeRoleButton,
-              ]}
-              onPress={() => setRole(item)}
-            >
-              <Text
-                style={[
-                  styles.roleText,
-                  role === item && styles.activeRoleText,
-                ]}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+<Text style={styles.label}>Select Role</Text>
+<View style={styles.roleContainer}>
+  {["student", "alumni", "admin"].map((item) => (
+    <TouchableOpacity
+      key={item}
+      style={[
+        styles.roleButton,
+        role === item && styles.activeRoleButton,
+      ]}
+      onPress={() => setRole(item)}
+    >
+      <Text
+        style={[
+          styles.roleText,
+          role === item && styles.activeRoleText,
+        ]}
+      >
+        {item.charAt(0).toUpperCase() + item.slice(1)}
+      </Text>
+    </TouchableOpacity>
+  ))}
+</View>
+
+{/* Institute Dropdown - only for Student & Alumni */}
+{(role === "student" || role === "alumni") && (
+  <>
+    <Text style={styles.label}>Select Your Institute</Text>
+    <View style={styles.pickerContainer}>
+      <Picker
+        selectedValue={selectedInstitute}
+        onValueChange={(itemValue) => setSelectedInstitute(itemValue)}
+        style={styles.picker}
+        dropdownIconColor="#fff" // makes arrow white
+      >
+        {institutes.map((inst, index) => (
+          <Picker.Item
+            key={index}
+            label={inst}
+            value={inst}
+            color={inst === "Select Institute" ? "#aaa" : "#000"}
+          />
+        ))}
+      </Picker>
+    </View>
+  </>
+)}
+
 
         {/* Signup Button */}
         <TouchableOpacity style={styles.signupButton}>
@@ -197,4 +227,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
   },
+  pickerContainer: {
+  width: "100%",
+  borderWidth: 1,
+  borderColor: "#4a90e2",
+  borderRadius: 12,
+  marginBottom: 20,
+  backgroundColor: "#287ae6",
+},
+picker: {
+  color: "#fff",
+  width: "100%",
+},
+
 });
